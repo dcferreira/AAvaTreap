@@ -214,4 +214,6 @@ public class Treap {
         System.out.println(Integer.toString(tree.root.left.key) + " " + Integer.toString(tree.root.left.priority));
         System.out.println(Integer.toString(tree.root.right.key) + " " + Integer.toString(tree.root.right.priority));*/
     }
+    
+    // Isto funciona - Samuel
 }
