@@ -58,6 +58,18 @@ public class Treap {
         return t;
     }
 
+    public TreapNode find(Integer k) {
+        TreapNode aux = root;
+        nullNode.key = k;
+
+        while(true) {
+            if(k < aux.key) aux = aux.left;
+            else if(k > aux.key) aux = aux.right;
+            else if(aux != nullNode) return aux;
+            else return null;
+        }
+    }
+
     static TreapNode rotateWithLeftChild(TreapNode t) {
         TreapNode out = t.left;
         t.left = out.right;
@@ -81,6 +93,10 @@ public class Treap {
         tree.remove(5);
 
         BTreePrinter.printNode(tree.root);
+
+        System.out.println("2 " + Integer.toString(tree.find(2).priority));
+        System.out.println("3 " + Integer.toString(tree.find(3).priority));
+        System.out.println("7 " + Integer.toString(tree.find(7).priority));
 
 
 
