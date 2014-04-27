@@ -9,7 +9,7 @@ public class Treap {
             nullNode = new TreapNode(null);
             nullNode.left = nullNode;
             nullNode.right = nullNode;
-            nullNode.priority = Integer.MAX_VALUE;
+            nullNode.priority = Integer.MIN_VALUE;
         }
 
     public Treap() {
@@ -25,12 +25,12 @@ public class Treap {
 
         else if(key < t.key) {
             t.left = insert(key, t.left);
-            if(t.left.priority < t.priority) t = rotateWithLeftChild(t);
+            if(t.left.priority > t.priority) t = rotateWithLeftChild(t);
         }
 
         else if(key > t.key) {
             t.right = insert(key, t.right);
-            if(t.right.priority < t.priority) t = rotateWithRightChild(t);
+            if(t.right.priority > t.priority) t = rotateWithRightChild(t);
         }
         // Caso contrário é repetido, e portanto não faz nada
 
@@ -47,7 +47,7 @@ public class Treap {
             else if(key > t.key) t.right = remove(key, t.right);
 
             else { // encontra a chave a remover
-                if(t.left.priority < t.right.priority) t = rotateWithLeftChild(t);
+                if(t.left.priority > t.right.priority) t = rotateWithLeftChild(t);
                 else t = rotateWithRightChild(t);
 
                 if(t != nullNode) t = remove(key, t);
@@ -72,10 +72,20 @@ public class Treap {
         return out;
     }
 
-
-
-
     public static void main(String[] args) {
-        System.out.println("teste");
+        Treap tree = new Treap();
+        tree.insert(3);
+        tree.insert(5);
+        tree.insert(2);
+        tree.insert(7);
+        tree.remove(5);
+
+        BTreePrinter.printNode(tree.root);
+
+
+
+        /*System.out.println(Integer.toString(tree.root.key) + " " + Integer.toString(tree.root.priority));
+        System.out.println(Integer.toString(tree.root.left.key) + " " + Integer.toString(tree.root.left.priority));
+        System.out.println(Integer.toString(tree.root.right.key) + " " + Integer.toString(tree.root.right.priority));*/
     }
 }
