@@ -10,7 +10,7 @@ public class TreapNode {
     TreapNode right;
 
     TreapNode(Integer n) {
-        this(n,null,null);
+        this(n,new Treap().root,new Treap().root);
     }
 
     TreapNode(Integer n, TreapNode leftNode, TreapNode rightNode) {
