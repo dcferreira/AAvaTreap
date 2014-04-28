@@ -1,6 +1,3 @@
-/**
- * Created by Daniel-user on 22/04/2014.
- */
 public class Treap {
     TreapNode root;
     static TreapNode nullNode;
@@ -41,12 +38,12 @@ public class Treap {
         if(t == nullNode) t = new TreapNode(key, nullNode, nullNode, priority);
 
         else if(key < t.key) {
-            t.left = insert(key, t.left);
+            t.left = insert(key, t.left, priority);
             if(t.left.priority > t.priority) t = rotateWithLeftChild(t);
         }
 
         else if(key > t.key) {
-            t.right = insert(key, t.right);
+            t.right = insert(key, t.right, priority);
             if(t.right.priority > t.priority) t = rotateWithRightChild(t);
         }
         // Caso contrário é repetido, e portanto não faz nada
@@ -163,15 +160,15 @@ public class Treap {
     static public Treap paste(Treap S1, Treap S2) {
         Integer k = S1.findMax();
         S1.remove(k);
-        Treap out = join(S1, k, S2);
 
-        return out;
+        return join(S1, k, S2);
     }
 
     static public Treap[] split(Integer k, Treap S) {
         Treap[] out = new Treap[2];
         S.remove(k);
-        S.insert(k,S.root,Integer.MAX_VALUE);
+        S.root = S.insert(k,S.root,Integer.MAX_VALUE);
+        if(S.root.key.equals(k)) System.out.println("erro!!!!!");
         out[0] = new Treap();
         out[0].root = S.root.left;
         out[1]= new Treap();
@@ -194,16 +191,24 @@ public class Treap {
 
         Treap tree3 = join(tree, 9, tree2);
 
-        BTreePrinter.printNode(tree3.root);
 
         System.out.println("2 " + Integer.toString(tree.find(2).priority));
         System.out.println("3 " + Integer.toString(tree.find(3).priority));
         System.out.println("5 " + Integer.toString(tree.find(5).priority));
         System.out.println("7 " + Integer.toString(tree.find(7).priority));
-        System.out.println("9 " + Integer.toString(tree3.find(9).priority));
+        //System.out.println("9 " + Integer.toString(tree3.find(9).priority));
         System.out.println("10 " + Integer.toString(tree2.find(10).priority));
         System.out.println("13 " + Integer.toString(tree2.find(13).priority));
         System.out.println("15 " + Integer.toString(tree2.find(15).priority));
+
+        Treap[] Trees = split(9,tree3);
+        BTreePrinter.printNode(tree.root);
+        BTreePrinter.printNode(Trees[0].root);
+        BTreePrinter.printNode(tree2.root);
+        BTreePrinter.printNode(Trees[1].root);
+
+        //tree3.remove(9);
+        //BTreePrinter.printNode(tree3.root);
 
         /*System.out.println(Integer.toString(tree.root.key) + " " + Integer.toString(tree.root.priority));
         System.out.println(Integer.toString(tree.root.left.key) + " " + Integer.toString(tree.root.left.priority));
