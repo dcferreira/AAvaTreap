@@ -117,29 +117,16 @@ public class Treap {
     }
 
    static private TreapNode rotate(TreapNode t) {
-       TreapNode out = t;
-       if(t.left.priority > t.priority && t.left.priority > t.right.priority) {
-           /*out = rotateWithLeftChild(t);
-           if(out.left != t) System.out.println(Integer.toString(out.left.key) + " " + Integer.toString(t.key));
-           out.left = rotate(t.left);
-           return out;*/
-           out = t.left;
-           t.left = out.right;
-           out.right = t;
-           out.right = rotate(out.right);
-           return out;
+       if(t.left.priority > t.priority && t.left.priority > t.right.priority) { // troca com o filho que tiver prioridade maior
+           t.left = rotate(t.left);
+           return rotateWithLeftChild(t);
        }
        else if(t.right.priority > t.priority) {
-           /*t.right = rotate(t.right);
-           return rotateWithRightChild(t);*/
-           out = t.right;
-           t.right = out.left;
-           out.left = t;
-           out.left = rotate(out.left);
-           return out;
+           t.right = rotate(t.right);
+           return rotateWithRightChild(t);
        }
 
-       return out;
+       return t;
    }
 
     static public Treap join(Treap S1, Integer k, Treap S2) {
@@ -163,11 +150,11 @@ public class Treap {
         return join(S1, k, S2);
     }
 
-    static public Treap[] split(Integer k, Treap S) {
+    static public Treap[] split(Integer k, Treap S) { // este método "danifica" a Treap original -- usar com cuidado
         Treap[] out = new Treap[2];
         S.remove(k);
         S.root = S.insert(k,S.root,Integer.MAX_VALUE);
-        if(!S.root.key.equals(k)) System.out.println("erro!!!!! A chave não foi para a raiz da árvore");
+        if(!S.root.key.equals(k)) System.out.println("Erro!!!!! A chave não foi para a raiz da árvore");
         out[0] = new Treap();
         out[0].root = S.root.left;
         out[1]= new Treap();
@@ -189,7 +176,7 @@ public class Treap {
         tree2.insert(10);
 
         Treap tree3 = join(tree, 9, tree2);
-
+        BTreePrinter.printNode(tree3.root);
 
         System.out.println("2 " + Integer.toString(tree.find(2).priority));
         System.out.println("3 " + Integer.toString(tree.find(3).priority));
@@ -201,17 +188,9 @@ public class Treap {
         System.out.println("15 " + Integer.toString(tree2.find(15).priority));
 
         Treap[] Trees = split(9,tree3);
-        BTreePrinter.printNode(tree3.root);
         BTreePrinter.printNode(tree.root);
         BTreePrinter.printNode(Trees[0].root);
         BTreePrinter.printNode(tree2.root);
         BTreePrinter.printNode(Trees[1].root);
-
-        //tree3.remove(9);
-        //BTreePrinter.printNode(tree3.root);
-
-        /*System.out.println(Integer.toString(tree.root.key) + " " + Integer.toString(tree.root.priority));
-        System.out.println(Integer.toString(tree.root.left.key) + " " + Integer.toString(tree.root.left.priority));
-        System.out.println(Integer.toString(tree.root.right.key) + " " + Integer.toString(tree.root.right.priority));*/
     }
 }
