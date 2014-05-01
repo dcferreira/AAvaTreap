@@ -1,3 +1,8 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.Random;
+
 public class Treap {
     TreapNode root;
     static TreapNode nullNode;
@@ -150,6 +155,11 @@ public class Treap {
         return join(S1, k, S2);
     }
 
+    static public int depth(TreapNode T) {
+        if(T == nullNode) return 0;
+        else return Math.max(depth(T.left),depth(T.right)) + 1;
+    }
+
     static public Treap[] split(Integer k, Treap S) { // este método "danifica" a Treap original -- usar com cuidado
         Treap[] out = new Treap[2];
         S.remove(k);
@@ -163,8 +173,8 @@ public class Treap {
         return out;
     }
 
-    public static void main(String[] args) {
-        Treap tree = new Treap();
+    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+        /*Treap tree = new Treap();
         tree.insert(3);
         tree.insert(5);
         tree.insert(2);
@@ -191,6 +201,70 @@ public class Treap {
         BTreePrinter.printNode(tree.root);
         BTreePrinter.printNode(Trees[0].root);
         BTreePrinter.printNode(tree2.root);
-        BTreePrinter.printNode(Trees[1].root);
+        BTreePrinter.printNode(Trees[1].root);*/
+
+        /*String insertCSV = "insert.csv", removeCSV = "remove.csv";
+        PrintWriter writer = new PrintWriter(insertCSV,"UTF-8");
+        PrintWriter removeW = new PrintWriter(removeCSV,"UTF-8");
+
+        int nmax = 100000,n, rep = 10000;
+        long insertStartTime, insertEndTime, removeStartTime, removeEndTime;
+        Treap[] tree = new Treap[1];
+        Random rand = new Random();
+        long[] times = new long[nmax];
+        long insertTempTimes, removeTempTimes;
+
+        for(int i=0; i < tree.length; i++) {
+            tree[i] = new Treap();
+        }
+        for(int i=-1000; i < nmax; i++) {
+            for(int j=0; j < tree.length; j++) {
+                n = rand.nextInt();
+                while (tree[j].find(n) != null) n = rand.nextInt();
+                insertTempTimes = 0;
+                removeTempTimes = 0;
+                for(int iteration = 0; iteration < rep; iteration++) {
+                    insertStartTime = System.nanoTime();
+                    tree[j].insert(n);
+                    insertEndTime = System.nanoTime();
+
+                    removeStartTime = System.nanoTime();
+                    tree[j].remove(n);
+                    removeEndTime = System.nanoTime();
+
+                    insertTempTimes += insertEndTime - insertStartTime;
+                    removeTempTimes += removeEndTime - removeStartTime;
+                }
+                if(i>=0) {
+                    writer.println(Integer.toString(i) + "," + Long.toString(insertTempTimes/rep));
+                    removeW.println(Integer.toString(i) + "," + Long.toString(removeTempTimes/rep));
+                }
+
+            }
+        }
+        writer.close();*/
+
+
+        PrintWriter writer = new PrintWriter("depth.csv","UTF-8");
+        Treap[] trees = new Treap[10];
+        int nmax = 10000,n;
+        Random rand = new Random();
+
+        writer.println("\"n\",\"depth\"");
+
+        for(int j=0; j < trees.length; j++) {
+            trees[j] = new Treap();
+        }
+
+        for(int i=1; i < nmax; i++) {
+            for(int j=0; j < trees.length; j++) {
+                n = rand.nextInt();
+                while (trees[j].find(n) != null) n = rand.nextInt();
+                trees[j].insert(n);
+                writer.println(Integer.toString(i) + "," + Integer.toString(depth(trees[j].root)));
+            }
+            System.out.println(i);
+        }
+        writer.close();
     }
 }
